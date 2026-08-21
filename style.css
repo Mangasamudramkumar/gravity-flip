@@ -1,0 +1,348 @@
+/* CSS Reset & Variable Definitions */
+:root {
+    --bg-dark: #070913;
+    --panel-bg: rgba(14, 18, 36, 0.85);
+    --cyan-glow: #00f0ff;
+    --magenta-glow: #ff007f;
+    --yellow-glow: #ffe600;
+    --green-glow: #00ff66;
+    --danger-red: #ff2a55;
+    --text-light: #e0f7fc;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Game Outer Frame Container */
+#gameContainer {
+    position: relative;
+    width: 1024px;
+    height: 576px;
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), 0 0 10px rgba(255, 0, 127, 0.2);
+    border: 2px solid rgba(0, 240, 255, 0.4);
+}
+
+/* Canvas Styling */
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #05060c;
+}
+
+/* HUD Overlay Header */
+#hud {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hud-item {
+    background: rgba(8, 12, 26, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.hud-label {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #8fa0b5;
+}
+
+.hud-value {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+/* Dynamic Gravity Status Badge */
+.gravity-container.down {
+    border-color: var(--cyan-glow);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+.gravity-container.down #hudGravity {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.gravity-container.up {
+    border-color: var(--magenta-glow);
+    box-shadow: 0 0 12px rgba(255, 0, 127, 0.4);
+}
+.gravity-container.up #hudGravity {
+    color: var(--magenta-glow);
+    text-shadow: 0 0 10px var(--magenta-glow);
+}
+
+/* Overlay Screens */
+.overlay-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 7, 15, 0.88);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    transition: opacity 0.3s ease;
+}
+
+.overlay-screen.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Titles */
+.title-container {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.glitch-title {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 20px var(--cyan-glow), 0 0 40px var(--cyan-glow);
+}
+
+.glitch-title .highlight {
+    color: var(--magenta-glow);
+    text-shadow: 0 0 20px var(--magenta-glow), 0 0 40px var(--magenta-glow);
+}
+
+.danger-title {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    color: var(--danger-red);
+    text-shadow: 0 0 20px var(--danger-red);
+    margin-bottom: 8px;
+}
+
+.success-title {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    color: var(--green-glow);
+    text-shadow: 0 0 20px var(--green-glow);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #a0b2cb;
+    letter-spacing: 2px;
+    margin-top: 6px;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 18px;
+}
+
+.button-group.vertical {
+    flex-direction: column;
+    width: 100%;
+}
+
+.neon-btn {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 14px 28px;
+    border: 2px solid var(--cyan-glow);
+    background: rgba(0, 240, 255, 0.08);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.neon-btn:hover {
+    background: var(--cyan-glow);
+    color: #000;
+    box-shadow: 0 0 25px var(--cyan-glow);
+    transform: translateY(-2px);
+}
+
+.neon-btn.secondary {
+    border-color: var(--magenta-glow);
+    background: rgba(255, 0, 127, 0.08);
+    box-shadow: 0 0 12px rgba(255, 0, 127, 0.2);
+}
+
+.neon-btn.secondary:hover {
+    background: var(--magenta-glow);
+    color: #fff;
+    box-shadow: 0 0 25px var(--magenta-glow);
+}
+
+.neon-btn.danger {
+    border-color: var(--danger-red);
+    background: rgba(255, 42, 85, 0.08);
+    box-shadow: 0 0 12px rgba(255, 42, 85, 0.2);
+}
+
+.neon-btn.danger:hover {
+    background: var(--danger-red);
+    color: #fff;
+    box-shadow: 0 0 25px var(--danger-red);
+}
+
+/* Modal Cards */
+.modal-card {
+    background: var(--panel-bg);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: 12px;
+    padding: 28px 36px;
+    width: 520px;
+    max-width: 90%;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-card.mini {
+    width: 360px;
+}
+
+.modal-card h2 {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+/* Controls Grid */
+.controls-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.control-row.highlight-row {
+    border-color: var(--magenta-glow);
+    background: rgba(255, 0, 127, 0.12);
+}
+
+kbd {
+    background: rgba(0, 240, 255, 0.15);
+    border: 1px solid var(--cyan-glow);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.gameplay-tips {
+    text-align: left;
+    font-size: 14px;
+    color: #b0c4de;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 3px solid var(--cyan-glow);
+}
+
+/* Stats Box */
+.stats-box {
+    width: 100%;
+    margin: 18px 0 24px 0;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 6px 0;
+    color: #a5b7d0;
+}
+
+.stat-line.total {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 6px;
+    padding-top: 10px;
+    font-size: 19px;
+    color: #fff;
+}
+
+.stat-line strong {
+    color: var(--yellow-glow);
+    font-family: var(--font-heading);
+}
+
+.screen-footer {
+    position: absolute;
+    bottom: 24px;
+    font-size: 14px;
+    color: #7184a0;
+}

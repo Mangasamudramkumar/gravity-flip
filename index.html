@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Flip - 2D Cyberpunk Platformer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for futuristic neon UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- HUD Header -->
+        <div id="hud" class="hidden">
+            <div class="hud-item lives-container">
+                <span class="hud-label">LIVES</span>
+                <span id="hudLives" class="hud-value">❤️❤️❤️</span>
+            </div>
+            <div class="hud-item score-container">
+                <span class="hud-label">SCORE</span>
+                <span id="hudScore" class="hud-value">00000</span>
+            </div>
+            <div class="hud-item coins-container">
+                <span class="hud-label">ORBS</span>
+                <span id="hudCoins" class="hud-value">🪙 0 / 15</span>
+            </div>
+            <div class="hud-item timer-container">
+                <span class="hud-label">TIME</span>
+                <span id="hudTimer" class="hud-value">⏱️ 00:00</span>
+            </div>
+            <div id="gravityBadge" class="hud-item gravity-container down">
+                <span class="hud-label">GRAVITY</span>
+                <span id="hudGravity" class="hud-value">DOWN</span>
+            </div>
+        </div>
+
+        <!-- HTML5 Game Canvas -->
+        <canvas id="gameCanvas" width="1024" height="576"></canvas>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="overlay-screen">
+            <div class="title-container">
+                <h1 class="glitch-title">GRAVITY<span class="highlight">FLIP</span></h1>
+                <p class="subtitle">Master gravity. Escape the impossible.</p>
+            </div>
+            <div class="button-group">
+                <button id="btnPlay" class="neon-btn primary">PLAY GAME</button>
+                <button id="btnHowToPlay" class="neon-btn secondary">HOW TO PLAY</button>
+            </div>
+            <div class="screen-footer">
+                <p>Press <kbd>SHIFT</kbd> anytime to invert physics</p>
+            </div>
+        </div>
+
+        <!-- How To Play Modal -->
+        <div id="howToPlayModal" class="overlay-screen hidden">
+            <div class="modal-card">
+                <h2>HOW TO PLAY</h2>
+                <div class="controls-grid">
+                    <div class="control-row">
+                        <span class="keys"><kbd>A</kbd> / <kbd>D</kbd> or <kbd>◄</kbd> <kbd>►</kbd></span>
+                        <span class="action">Move Left / Right</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="keys"><kbd>SPACE</kbd> or <kbd>W</kbd> / <kbd>▲</kbd></span>
+                        <span class="action">Jump</span>
+                    </div>
+                    <div class="control-row highlight-row">
+                        <span class="keys"><kbd>SHIFT</kbd> or <kbd>S</kbd> / <kbd>▼</kbd></span>
+                        <span class="action"><strong>FLIP GRAVITY</strong></span>
+                    </div>
+                    <div class="control-row">
+                        <span class="keys"><kbd>R</kbd></span>
+                        <span class="action">Restart Level / Respawn</span>
+                    </div>
+                    <div class="control-row">
+                        <span class="keys"><kbd>ESC</kbd> or <kbd>P</kbd></span>
+                        <span class="action">Pause Game</span>
+                    </div>
+                </div>
+                <div class="gameplay-tips">
+                    <p>⚡ <strong>Gravity Switch:</strong> Inverse gravity lets you attach to the ceiling and walk upside down!</p>
+                    <p>⚡ <strong>Coyote Time:</strong> You can jump slightly after stepping off platforms.</p>
+                    <p>⚡ <strong>Hazards:</strong> Spikes and lasers kill instantly. Reach checkpoints to save progress!</p>
+                </div>
+                <button id="btnCloseHowToPlay" class="neon-btn primary">BACK TO MENU</button>
+            </div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pauseScreen" class="overlay-screen hidden">
+            <div class="modal-card mini">
+                <h2>GAME PAUSED</h2>
+                <div class="button-group vertical">
+                    <button id="btnResume" class="neon-btn primary">RESUME</button>
+                    <button id="btnRestartPause" class="neon-btn secondary">RESTART</button>
+                    <button id="btnQuit" class="neon-btn danger">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="overlay-screen hidden">
+            <div class="modal-card">
+                <h1 class="danger-title">SYSTEM FAILURE</h1>
+                <p class="subtitle">Out of lives! Cyber Core Depleted.</p>
+                <div class="stats-box">
+                    <div class="stat-line"><span>Score:</span> <strong id="finalScoreFail">0</strong></div>
+                    <div class="stat-line"><span>Orbs Collected:</span> <strong id="finalCoinsFail">0 / 15</strong></div>
+                </div>
+                <div class="button-group">
+                    <button id="btnRetry" class="neon-btn primary">TRY AGAIN</button>
+                    <button id="btnMenuFail" class="neon-btn secondary">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Completed Screen -->
+        <div id="levelCompleteScreen" class="overlay-screen hidden">
+            <div class="modal-card">
+                <h1 class="success-title">LEVEL COMPLETED!</h1>
+                <p class="subtitle">Gravity Matrix Mastered!</p>
+                <div class="stats-box">
+                    <div class="stat-line"><span>Time Taken:</span> <strong id="completeTime">00:00</strong></div>
+                    <div class="stat-line"><span>Energy Orbs:</span> <strong id="completeCoins">0 / 15</strong></div>
+                    <div class="stat-line"><span>Orb Bonus:</span> <strong id="completeOrbBonus">+0</strong></div>
+                    <div class="stat-line total"><span>Final Score:</span> <strong id="completeTotalScore">0</strong></div>
+                </div>
+                <div class="button-group">
+                    <button id="btnPlayAgain" class="neon-btn primary">PLAY AGAIN</button>
+                    <button id="btnMenuSuccess" class="neon-btn secondary">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Scripts -->
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
